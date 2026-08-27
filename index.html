@@ -3,13 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>RecipeHub</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header>
+        <div class="logo">🍴 RecipeHub</div>
+        <nav>
+            <button id = "random-btn">🎲 Випадковий рецепт</button>
+            <button id = "what-cook-btn">🤔 Що приготувати?</button>
+        </nav>
+    </header>
     
-    
+    <main>
+        <section class = "hero">
+            <h1>Знайди свій рецепт</h1>
+            <p>Шукай страви, знаходь нові смаки та готуй щось круте.</p>
+            <div class = "search-box">
+                <input
+                    type ="text"
+                    id = "search-input"
+                    placeholder="Наприклад:pizza, chicken..."
+                >
+                <button id = "search-btn">🔍 Знайти</button>
+            </div>
+        </section>
 
+        <section class = "categories">
+            <h2>Категорії</h2>
+            <div class = "category-buttons">
+                <button data-category="chicken">🍗 Курка</button>
+                <button data-category="Beef">🥩 Яловичина></button>
+                <button data-category="Pasta">🍝 Паста</button>
+                <button data-category="Dessert">🍰 Десерти</button>
+                <button data-category="Seafood">🐟 Морепродукти</button>
+                <button data-category="Breakfast">🍳 Сніданок</button>             
+            </div>
+        </section>
+
+        <section>
+            <h2 id="results-title">Популярні рецепти</h2>
+            <div id="recipes-container" class="recipes-container"></div>
+        </section>
+    </main>
+
+    <div id="recipe-modal" class = "modal hidden">
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn">✕</button>
+            <img id = "modal-image" src="" alt="">
+            <h2 id = "modal-title"></h2>
+            <p id = "modal-info"></p>
+            <h3>Інгредієнти</h3>
+            <ul id = "ingredients-list"></ul>
+            <h3>Приготування</h3>
+            <p id = "instructions"></p>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
