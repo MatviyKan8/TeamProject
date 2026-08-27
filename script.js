@@ -118,6 +118,5 @@ async function openRecipe(id) {
 
         modal.classList.remove("hidden");
     
-}   catch (error) {
-    console.error(error);
+
 }
