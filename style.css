@@ -148,7 +148,7 @@ button:hover{
 .recipes h2{
     margin-bottom: 25px;
 }
-.recipe-grid{
+.recipes-container{
     display: grid;
     grid-template-columns: repeat(4,1fr);
     gap: 20px;
@@ -160,6 +160,7 @@ button:hover{
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: 0.25s;
+    max-width: 500px;
 }
 .recipe-card:hover{
     transform: translateY(-6px);
@@ -210,7 +211,7 @@ body.dark .category{
     background: #2c2c3a;
     color: #f5f3ff;
 }
-body. dark .recipe-info p{
+body.dark .recipe-info p{
     color: #d1d5db;
 }
 @media (max-width: 700px){
