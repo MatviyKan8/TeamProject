@@ -183,3 +183,51 @@ button:hover{
     margin-bottom: 15px;
     line-height: 1.5;
 }
+.categories{
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 25px 0;
+}
+.category{
+    padding: 12px 20px;
+    background: #ede9fe;
+    border-radius: 10px;
+    transition: 0.2s;
+    cursor: pointer;
+    border: 1px solid #ddd6fe;
+}
+.category:hover{
+    background: #7c3aed;
+    color: #f5f3ff;
+}
+body.dark{
+    background: #1f1f29;
+    color: #f5f3ff;
+}
+body.dark .recipe-card,
+body.dark .category{
+    background: #2c2c3a;
+    color: #f5f3ff;
+}
+body. dark .recipe-info p{
+    color: #d1d5db;
+}
+@media (max-width: 700px){
+    header{
+        padding: 20px;
+    }
+    .container{
+        padding:  20px;
+    }
+    .search-box{
+        flex-direction: column;
+    }
+    .search-box input,
+    .search-box button{
+        border-radius: 10px;
+    }
+    .search-box button{
+        margin-top: 10px;
+    }
+}
