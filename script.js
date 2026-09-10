@@ -17,6 +17,10 @@ const modalInfo = document.querySelector("#modal-info");
 const ingredientsList = document.querySelector("#ingredients-list");
 const instructions = document.querySelector("#instructions");
 
+const imageModal = document.querySelector("#image-modal");
+const bigImage = document.querySelector("#big-image");
+const closeImage = document.querySelector("#close-image");
+
 
 async function searchRecipes(query) {
 
@@ -67,15 +71,17 @@ function displayRecipes(recipes) {
 
                 <p>${recipe.strCategory || "Страва"}</p>
 
-                <button onclick="openRecipe('${recipe.idMeal}')">
+                <button>
                     Переглянути рецепт
                 </button>
 
             </div>
         `;
 
-        recipesContainer.appendChild(card);
+        card.addEventListener("click", () => {
+            openRecipe(recipe.idMeal);
     });
+});
 }
 
 
@@ -125,7 +131,21 @@ async function openRecipe(id) {
     }
 }
 
+modalImage.addEventListener("click", () =>{
+    bigImage.src = modalImage.src;
+    imageModal.classList.add("hidden")
+});
 
+closeImage.addEventListener("click", () => {
+    imageModal.classList.add("hidden");
+});
+
+imageModal.addEventListener("click", (event) => {
+
+    if (event.target === imageModal) {
+        imageModal.classList.add("hidden");
+    }
+});
 async function getRandomRecipe() {
 
     try {
