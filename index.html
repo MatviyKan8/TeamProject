@@ -12,6 +12,8 @@
         <nav>
             <button id = "random-btn">🎲 Випадковий рецепт</button>
             <button id = "what-cook-btn">🤔 Що приготувати?</button>
+            <button id = "favorites-btn">❤️ Обране</button>
+            <button id = "theme-btn">🌙</button>
         </nav>
     </header>
     
@@ -32,8 +34,8 @@
         <section class = "categories">
             <h2>Категорії</h2>
             <div class = "category-buttons">
-                <button data-category="chicken">🍗 Курка</button>
-                <button data-category="Beef">🥩 Яловичина></button>
+                <button data-category="Chicken">🍗 Курка</button>
+                <button data-category="Beef">🥩 Яловичина</button>
                 <button data-category="Pasta">🍝 Паста</button>
                 <button data-category="Dessert">🍰 Десерти</button>
                 <button data-category="Seafood">🐟 Морепродукти</button>
@@ -50,6 +52,9 @@
     <div id="recipe-modal" class = "modal hidden">
         <div class="modal-content">
             <button id="close-modal" class="close-btn">✕</button>
+            <button id="favorite-btn" class="favorite-btn">
+                🤍 Додати в обране
+            </button>           
             <img id="modal-image" src="" alt="" class="modal-image">
             <h2 id = "modal-title"></h2>
             <p id = "modal-info"></p>
@@ -59,10 +64,33 @@
             <p id = "instructions"></p>
         </div>
     </div>
-    <script src="script.js"></script>
     <div id="image-modal" class="image-modal hidden">
     <button id="close-image" class="close-image">✕</button>
     <img id="big-image" src="" alt="">
 </div>
+    <div id="cook-modal" class="modal hidden">
+    <div class="cook-content">
+        <button id="close-cook-modal" class="close-btn">✕</button>
+
+        <h2>🤔 Що приготувати?</h2>
+
+        <p>
+            Напиши продукти, які є у тебе вдома.
+        </p>
+
+        <input
+            id="ingredients-input"
+            type="text"
+            placeholder="Наприклад: chicken, rice, tomato"
+        >
+
+        <button id="find-cook-btn">
+            🔍 Знайти рецепти
+        </button>
+
+        <p id="cook-status"></p>
+    </div>
+</div>
+    <script src="script.js"></script>
 </body>
 </html>

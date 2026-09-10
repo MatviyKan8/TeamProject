@@ -1,4 +1,4 @@
-.{
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -14,7 +14,7 @@ body{
    transition: 0.3s;
 }
 
-.header{
+header{
   background: linear-gradient(135deg, #6d28d9, #8b5cf6);
   color: #f5f3ff;
   padding: 20px 50px;
@@ -253,7 +253,7 @@ body.dark .recipe-info p{
     inset: 0;
     background: rgba(0, 0, 0, 0.9);
 
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
 
@@ -304,4 +304,272 @@ body.dark .recipe-info p{
         transform: scale(1);
         opacity: 1;
     }
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.7);
+
+    z-index: 100;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    position: relative;
+
+    width: 90%;
+    max-width: 750px;
+    max-height: 90vh;
+
+    background: white;
+    border-radius: 20px;
+
+    padding: 25px;
+
+    overflow-y: auto;
+
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-image {
+    display: block;
+
+    width: 100%;
+    max-height: 350px;
+
+    object-fit: cover;
+
+    border-radius: 15px;
+
+    cursor: zoom-in;
+}
+
+.modal-content h2 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.modal-content h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    line-height: 1.6;
+}
+
+.modal-content ul {
+    padding-left: 25px;
+}
+
+.modal-content li {
+    margin-bottom: 6px;
+}
+
+.close-btn {
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    width: 40px;
+    height: 40px;
+
+    padding: 0;
+
+    border-radius: 50%;
+
+    background: #7c3aed;
+    color: white;
+
+    font-size: 18px;
+
+    z-index: 10;
+}
+
+.close-btn:hover {
+    transform: none;
+}
+
+.image-modal {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+
+    background: rgba(0, 0, 0, 0.9);
+
+    z-index: 1000;
+}
+
+.image-modal.hidden {
+    display: none;
+}
+
+.image-modal img {
+    display: block;
+
+    max-width: 90%;
+    max-height: 85vh;
+
+    object-fit: contain;
+
+    border-radius: 15px;
+
+    animation: zoomIn 0.25s ease;
+}
+
+.close-image {
+    position: absolute;
+
+    top: 25px;
+    right: 30px;
+
+    width: 45px;
+    height: 45px;
+
+    padding: 0;
+
+    border-radius: 50%;
+
+    background: white;
+    color: #222;
+
+    font-size: 20px;
+
+    z-index: 10;
+}
+
+.close-image:hover {
+    background: #eee;
+    transform: none;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+body.dark {
+    background: #18181f;
+    color: #f5f3ff;
+}
+
+body.dark header {
+    background: linear-gradient(135deg, #241044, #3b176d);
+}
+
+body.dark .hero {
+    background: linear-gradient(135deg, #211b2d, #30264a);
+}
+
+body.dark .hero p {
+    color: #c4bfd0;
+}
+
+body.dark .recipe-card {
+    background: #262630;
+    color: #f5f3ff;
+}
+
+body.dark .recipe-info p {
+    color: #c4bfd0;
+}
+
+body.dark .modal-content,
+body.dark .cook-content {
+    background: #262630;
+    color: #f5f3ff;
+}
+
+body.dark .search-box input,
+body.dark #ingredients-input {
+    background: #202029;
+    color: white;
+    border-color: #4b4660;
+}
+
+body.dark .categories {
+    color: #f5f3ff;
+}
+
+
+.favorite-btn {
+    margin-top: 15px;
+    width: 100%;
+    background: #ec4899;
+}
+
+.favorite-btn:hover {
+    background: #db2777;
+}
+
+.cook-content {
+    position: relative;
+
+    width: 90%;
+    max-width: 550px;
+
+    background: white;
+    border-radius: 20px;
+
+    padding: 30px;
+
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.cook-content h2 {
+    margin-bottom: 10px;
+}
+
+.cook-content p {
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+#ingredients-input {
+    width: 100%;
+
+    padding: 15px;
+
+    border: 1px solid #ddd6fe;
+    border-radius: 10px;
+
+    font-size: 16px;
+    outline: none;
+
+    margin-bottom: 15px;
+}
+
+#find-cook-btn {
+    width: 100%;
+}
+
+#cook-status {
+    margin-top: 15px;
+}
+
+#theme-btn {
+    min-width: 45px;
 }

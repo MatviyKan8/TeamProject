@@ -21,6 +21,18 @@ const imageModal = document.querySelector("#image-modal");
 const bigImage = document.querySelector("#big-image");
 const closeImage = document.querySelector("#close-image");
 
+const favoritesBtn = document.querySelector("#favorites-btn");
+const favoriteBtn = document.querySelector("#favorite-btn");
+const themeBtn = document.querySelector("#theme-btn");
+
+const cookModal = document.querySelector("#cook-modal");
+const closeCookModal = document.querySelector("#close-cook-modal");
+const findCookBtn = document.querySelector("#find-cook-btn");
+const ingredientsInput = document.querySelector("#ingredients-input");
+const cookStatus = document.querySelector("#cook-status");
+
+let currentRecipe = null;
+
 
 async function searchRecipes(query) {
 
@@ -51,6 +63,32 @@ async function searchRecipes(query) {
     }
 }
 
+function getFavorites() {
+    return JSON.parse(localStorage.getItem("recipeFavorites")) || [];
+}
+
+function saveFavorites(favorites) {
+    localStorage.setItem(
+        "recipeFavorites",
+        JSON.stringify(favorites)
+    );
+}
+
+function updateFavoriteButton() {
+    const favorites = getFavorites();
+
+    if (!currentRecipe) return;
+
+    const isFavorite = favorites.some(
+        recipe => recipe.id === currentRecipe.idMeal
+    );
+
+    if (isFavorite) {
+        favoriteBtn.textContent = "❤️ В обраному";
+    } else {
+        favoriteBtn.textContent = "🤍 Додати в обране";
+    }
+}
 
 function displayRecipes(recipes) {
 
@@ -81,6 +119,7 @@ function displayRecipes(recipes) {
         card.addEventListener("click", () => {
             openRecipe(recipe.idMeal);
     });
+    recipesContainer.appendChild(card);
 });
 }
 
@@ -96,6 +135,9 @@ async function openRecipe(id) {
         const data = await response.json();
 
         const recipe = data.meals[0];
+
+        currentRecipe = recipe;
+        updateFavoriteButton();
 
         modalImage.src = recipe.strMealThumb;
         modalTitle.textContent = recipe.strMeal;
@@ -131,9 +173,32 @@ async function openRecipe(id) {
     }
 }
 
+favoriteBtn.addEventListener("click", () => {
+    if (!currentRecipe) return;
+
+    let favorites = getFavorites();
+
+    const index = favorites.findIndex(
+        recipe => recipe.id === currentRecipe.idMeal
+    );
+
+    if (index !== -1) {
+        favorites.splice(index, 1);
+    } else {
+        favorites.push({
+            id: currentRecipe.idMeal,
+            name: currentRecipe.strMeal,
+            thumb: currentRecipe.strMealThumb
+        });
+    }
+
+    saveFavorites(favorites);
+    updateFavoriteButton();
+});
+
 modalImage.addEventListener("click", () =>{
     bigImage.src = modalImage.src;
-    imageModal.classList.add("hidden")
+    imageModal.classList.remove("hidden");
 });
 
 closeImage.addEventListener("click", () => {
@@ -164,6 +229,75 @@ async function getRandomRecipe() {
     }
 }
 
+async function showFavorites() {
+    const favorites = getFavorites();
+
+    resultsTitle.textContent = "❤️ Обране";
+
+    if (favorites.length === 0) {
+        recipesContainer.innerHTML =
+            "<p>Тут поки нічого немає 🤍</p>";
+        return;
+    }
+
+    recipesContainer.innerHTML = "";
+
+    favorites.forEach(recipe => {
+        const card = document.createElement("div");
+
+        card.classList.add("recipe-card");
+
+        card.innerHTML = `
+            <img src="${recipe.thumb}" alt="${recipe.name}">
+
+            <div class="recipe-info">
+                <h3>${recipe.name}</h3>
+
+                <button>
+                    Переглянути рецепт
+                </button>
+            </div>
+        `;
+
+        card.addEventListener("click", () => {
+            openRecipe(recipe.id);
+        });
+
+        recipesContainer.appendChild(card);
+    });
+}
+
+favoritesBtn.addEventListener("click", () => {
+    showFavorites();
+});
+
+function updateThemeButton() {
+    if (document.body.classList.contains("dark")) {
+        themeBtn.textContent = "☀️";
+    } else {
+        themeBtn.textContent = "🌙";
+    }
+}
+
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+}
+
+updateThemeButton();
+
+themeBtn.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+
+    if (document.body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+    } else {
+        localStorage.setItem("theme", "light");
+    }
+
+    updateThemeButton();
+});
+
+
 
 async function getByCategory(category) {
 
@@ -187,6 +321,60 @@ async function getByCategory(category) {
     }
 }
 
+async function findRecipesByIngredients(ingredients) {
+    recipesContainer.innerHTML = "<p>🔍 Шукаємо рецепти...</p>";
+
+    const recipeMap = {};
+
+    try {
+        for (const ingredient of ingredients) {
+
+            const response = await fetch(
+                `${API_URL}filter.php?i=${encodeURIComponent(ingredient)}`
+            );
+
+            const data = await response.json();
+
+            if (!data.meals) continue;
+
+            data.meals.forEach(recipe => {
+
+                if (!recipeMap[recipe.idMeal]) {
+                    recipeMap[recipe.idMeal] = {
+                        ...recipe,
+                        matches: 0
+                    };
+                }
+
+                recipeMap[recipe.idMeal].matches++;
+            });
+        }
+
+        const recipes = Object.values(recipeMap);
+
+        recipes.sort((a, b) => b.matches - a.matches);
+
+        if (recipes.length === 0) {
+            recipesContainer.innerHTML =
+                "<p>😢 Не знайшли рецептів з такими продуктами.</p>";
+            return;
+        }
+
+        resultsTitle.textContent = "🤔 Що можна приготувати?";
+
+        displayRecipes(recipes);
+
+        cookModal.classList.add("hidden");
+
+    } catch (error) {
+
+        console.error(error);
+
+        recipesContainer.innerHTML =
+            "<p>❌ Помилка пошуку рецептів.</p>";
+    }
+}
+
 
 searchBtn.addEventListener("click", () => {
 
@@ -199,6 +387,32 @@ searchBtn.addEventListener("click", () => {
     resultsTitle.textContent = `Результати для: ${query}`;
 
     searchRecipes(query);
+});
+
+findCookBtn.addEventListener("click", () => {
+
+    const value = ingredientsInput.value.trim();
+
+    if (value === "") {
+        cookStatus.textContent =
+            "Напиши хоча б один продукт.";
+        return;
+    }
+
+    const ingredients = value
+        .split(",")
+        .map(item => item.trim().toLowerCase())
+        .filter(item => item !== "");
+
+    cookStatus.textContent = "";
+
+    findRecipesByIngredients(ingredients);
+});
+
+ingredientsInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        findCookBtn.click();
+    }
 });
 
 
@@ -238,6 +452,22 @@ modal.addEventListener("click", (event) => {
         modal.classList.add("hidden");
     }
 });
+
+whatCookBtn.addEventListener("click", () => {
+    cookModal.classList.remove("hidden");
+});
+
+closeCookModal.addEventListener("click", () => {
+    cookModal.classList.add("hidden");
+});
+
+cookModal.addEventListener("click", (event) => {
+    if (event.target === cookModal) {
+        cookModal.classList.add("hidden");
+    }
+});
+
+
 
 
 searchRecipes("chicken");
